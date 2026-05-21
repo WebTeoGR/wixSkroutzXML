@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wix To Xml</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="images">
+        <img src="./wix-logo.svg" alt="" width="100px" />
+        <img src="./skroutz-logo.svg" alt="" width="200px" />
+      </div>
+      <input type="password" class="input-code" />
+      <button class="update-button">Ενημέρωση</button>
+      <div class="message"></div>
+    </div>
+
+    <script>
+      function hideElement(element) {
+        setTimeout(() => {
+          element.textContent = ''
+          element.style.display = 'none'
+          element.style.backgroundColor = '#0D6EFD'
+        }, 6000)
+      }
+      const button = document.querySelector('.update-button')
+      const message = document.querySelector('.message')
+      const input = document.querySelector('.input-code')
+
+      let statusCode = 200
+      button.addEventListener('click', (e) => {
+        // const url = 'https://onik.store/makexml'
+        const url = 'http://localhost:5000/makexml'
+        const data = {
+          code: input.value,
+        }
+        const options = {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        }
+        statusCode = 200
+        message.textContent = 'Παρακαλώ Περιμένετε...'
+        message.style.display = 'block'
+        message.style.backgroundColor = '#0D6EFD'
+        fetch(url, options)
+          .then((response) => {
+            statusCode = response.status
+            return response.json()
+          })
+          .then((data) => {
+            if (statusCode === 200) {
+              message.style.backgroundColor = '#218838'
+            } else {
+              message.style.backgroundColor = '#DC3545'
+            }
+            message.textContent = data.message
+            message.style.display = 'block'
+            hideElement(message)
+            console.log(data)
+          })
+          .catch((error) => {
+            // Handle any errors
+            console.error('Error:', error)
+          })
+      })
+    </script>
+  </body>
+</html>
+
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+  .input-code {
+    width: 153px;
+    padding: 0.3rem 0;
+  }
+  .container {
+    padding: 4rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+  }
+  .images {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+  }
+  .update-button {
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 0.5rem 1.5rem;
+  }
+  .message {
+    padding: 1rem 2rem;
+    background-color: #0d6efd;
+    display: none;
+    font-size: 1.3rem;
+    border-radius: 10px;
+    color: white;
+  }
+</style>
