@@ -108,6 +108,7 @@ export function filterProducts(products) {
     let brand = ''
     let weight = ''
     let mpn = ''
+    let ean =  products[i].numericId.slice(0, -3)
     if (products[i].price.discountedPrice > 0) {
       price = products[i].price.discountedPrice
     } else {
@@ -158,6 +159,7 @@ export function filterProducts(products) {
     if (name === undefined || name.length <= 0) continue
     if (category === undefined || category.length <= 0) continue
     if (mpn === undefined || mpn.length <= 0) continue
+    if (ean === undefined || ean.length <= 0) continue
     if (link === undefined || link.length <= 0) continue
     if (description === undefined || description.length <= 0) continue
     if (featureimage === undefined || featureimage.length <= 0) continue
@@ -206,6 +208,7 @@ export function filterProducts(products) {
       name: name.trim() + ' ' + mpn.trim(),
       category: convertHtmlEntities(category),
       mpn: mpn.trim(),
+      ean: ean.trim(),
       link: link.trim(),
       description: convertHtmlEntities(description).trim(),
       imageurl: featureimage.trim(),
